@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark Assistant (BSC Yr1)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        form {
+            margin: 40px auto;
+            max-width: 400px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .output {
+            margin-top: 30px;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            padding: 10px;
+            background-color: #f2f2f2;
+            text-align: right;
+        }
+
+        footer p {
+            display: inline-block;
+            margin: 0;
+            font-size: 14px;
+        }
+
+        footer img {
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Welcome To Mark Assistant (BSC Yr1)</h1>
+    <h6>beta v0.1</h6>
+    <form id="markForm">
+        <h2>Math512</h2>
+        <label for="mathCA1">CA1:</label>
+        <input type="number" id="mathCA1" min="0" max="100" pattern="\d*" required>
+
+        <label for="mathCA2">CA2:</label>
+        <input type="number" id="mathCA2" min="0" max="100" pattern="\d*" required>
+
+        <label for="mathAssignment">Assignment:</label>
+        <input type="number" id="mathAssignment" min="0" max="100" pattern="\d*" required>
+
+        <h2>Information Sys512</h2>
+        <label for="infoSysCA1">CA1:</label>
+        <input type="number" id="infoSysCA1" min="0" max="100" pattern="\d*" required>
+
+        <label for="infoSysCA2">CA2:</label>
+        <input type="number" id="infoSysCA2" min="0" max="100" pattern="\d*" required>
+
+        <label for="infoSysAssignment">Assignment:</label>
+        <input type="number" id="infoSysAssignment" min="0" max="100" pattern="\d*" required>
+
+        <h2>Networks512</h2>
+        <label for="networksCA1">CA1:</label>
+        <input type="number" id="networksCA1" min="0" max="100" pattern="\d*" required>
+
+        <label for="networksCA2">CA2:</label>
+        <input type="number" id="networksCA2" min="0" max="100" pattern="\d*" required>
+
+        <label for="networksAssignment">Assignment:</label>
+        <input type="number" id="networksAssignment" min="0" max="100" pattern="\d*" required>
+
+        <h2>Prog512</h2>
+        <label for="progCA1">CA1:</label>
+        <input type="number" id="progCA1" min="0" max="100" pattern="\d*" required>
+
+        <label for="progCA2">CA2:</label>
+        <input type="number" id="progCA2" min="0" max="100" pattern="\d*" required>
+
+        <label for="progAssignment">Assignment:</label>
+        <input type="number" id="progAssignment" min="0" max="100" pattern="\d*" required>
+
+        <h2>WebTech512</h2>
+        <label for="webTechCA1">CA1:</label>
+        <input type="number" id="webTechCA1" min="0" max="100" pattern="\d*" required>
+
+        <label for="webTechCA2">CA2:</label>
+        <input type="number" id="webTechCA2" min="0" max="100" pattern="\d*" required>
+
+        <label for="webTechAssignment">Assignment:</label>
+        <input type="number" id="webTechAssignment" min="0" max="100" pattern="\d*" required>
+
+        <h2>DataScience500</h2>
+        <label for="dataScienceCA1">CA1:</label>
+        <input type="number" id="dataScienceCA1" min="0" max="100" pattern="\d*" required>
+
+        <label for="dataScienceCA2">CA2:</label>
+        <input type="number" id="dataScienceCA2" min="0" max="100" pattern="\d*" required>
+
+        <label for="dataScienceAssignment">Assignment:</label>
+        <input type="number" id="dataScienceAssignment" min="0" max="100" pattern="\d*" required>
+
+        <button type="submit">Calculate period mark</button>
+    </form>
+
+    <div id="outputSection" class="output" style="display: none;">
+        <h2>Your Period Marks</h2>
+        <p>Math: <span id="mathOutput"></span></p>
+        <p>Infosys: <span id="infoSysOutput"></span></p>
+        <p>Networks: <span id="networksOutput"></span></p>
+        <p>Prog512: <span id="progOutput"></span></p>
+        <p>WebTech512: <span id="webTechOutput"></span></p>
+        <p>DataScience500: <span id="dataScienceOutput"></span></p>
+    </div>
+
+    <h2>How many marks would you need out of hundred in the exam to get a distinction (75%)?</h2>
+    <form id="examForm">
+        <button type="submit">Calculate</button>
+    </form>
+
+    <p id="distinctionResult" class="output" style="display: none;"></p>
+
+    <script>
+        const markForm = document.getElementById("markForm");
+        const outputSection = document.getElementById("outputSection");
+        const mathOutput = document.getElementById("mathOutput");
+        const infoSysOutput = document.getElementById("infoSysOutput");
+        const networksOutput = document.getElementById("networksOutput");
+        const progOutput = document.getElementById("progOutput");
+        const webTechOutput = document.getElementById("webTechOutput");
+        const dataScienceOutput = document.getElementById("dataScienceOutput");
+        const examForm = document.getElementById("examForm");
+        const distinctionResult = document.getElementById("distinctionResult");
+
+        markForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            calculatePeriodMarks();
+        });
+
+        examForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            calculateDistinctionMarks();
+        });
+
+        function calculatePeriodMarks() {
+            const mathCA1 = parseFloat(document.getElementById("mathCA1").value);
+            const mathCA2 = parseFloat(document.getElementById("mathCA2").value);
+            const mathAssignment = parseFloat(document.getElementById("mathAssignment").value);
+
+            const infoSysCA1 = parseFloat(document.getElementById("infoSysCA1").value);
+            const infoSysCA2 = parseFloat(document.getElementById("infoSysCA2").value);
+            const infoSysAssignment = parseFloat(document.getElementById("infoSysAssignment").value);
+
+            const networksCA1 = parseFloat(document.getElementById("networksCA1").value);
+            const networksCA2 = parseFloat(document.getElementById("networksCA2").value);
+            const networksAssignment = parseFloat(document.getElementById("networksAssignment").value);
+
+            const progCA1 = parseFloat(document.getElementById("progCA1").value);
+            const progCA2 = parseFloat(document.getElementById("progCA2").value);
+            const progAssignment = parseFloat(document.getElementById("progAssignment").value);
+
+            const webTechCA1 = parseFloat(document.getElementById("webTechCA1").value);
+            const webTechCA2 = parseFloat(document.getElementById("webTechCA2").value);
+            const webTechAssignment = parseFloat(document.getElementById("webTechAssignment").value);
+
+            const dataScienceCA1 = parseFloat(document.getElementById("dataScienceCA1").value);
+            const dataScienceCA2 = parseFloat(document.getElementById("dataScienceCA2").value);
+            const dataScienceAssignment = parseFloat(document.getElementById("dataScienceAssignment").value);
+
+            // Calculate period marks for each subject out of 40%
+            const mathPeriodMark = ((mathCA1 * 0.33 + mathCA2 * 0.33 + mathAssignment * 0.34) / 100 * 40).toFixed(2);
+            const infoSysPeriodMark = ((infoSysCA1 * 0.33 + infoSysCA2 * 0.33 + infoSysAssignment * 0.34) / 100 * 40).toFixed(2);
+            const networksPeriodMark = ((networksCA1 * 0.33 + networksCA2 * 0.33 + networksAssignment * 0.34) / 100 * 40).toFixed(2);
+            const progPeriodMark = ((progCA1 * 0.33 + progCA2 * 0.33 + progAssignment * 0.34) / 100 * 40).toFixed(2);
+            const webTechPeriodMark = ((webTechCA1 * 0.33 + webTechCA2 * 0.33 + webTechAssignment * 0.34) / 100 * 40).toFixed(2);
+            const dataSciencePeriodMark = ((dataScienceCA1 * 0.33 + dataScienceCA2 * 0.33 + dataScienceAssignment * 0.34) / 100 * 40).toFixed(2);
+
+            // Output the period marks
+            mathOutput.textContent = mathPeriodMark;
+            infoSysOutput.textContent = infoSysPeriodMark;
+            networksOutput.textContent = networksPeriodMark;
+            progOutput.textContent = progPeriodMark;
+            webTechOutput.textContent = webTechPeriodMark;
+            dataScienceOutput.textContent = dataSciencePeriodMark;
+
+            // Show the output section
+            outputSection.style.display = "block";
+        }
+        function calculateDistinctionMarks() {
+            const subjects = [
+                { id: "math", periodMarkId: "mathOutput" },
+                { id: "infoSys", periodMarkId: "infoSysOutput" },
+                { id: "networks", periodMarkId: "networksOutput" },
+                { id: "prog", periodMarkId: "progOutput" },
+                { id: "webTech", periodMarkId: "webTechOutput" },
+                { id: "dataScience", periodMarkId: "dataScienceOutput" },
+            ];
+
+            subjects.forEach(subject => {
+                const periodMarkElement = document.getElementById(subject.periodMarkId);
+                const periodMark = parseFloat(periodMarkElement.textContent);
+
+                // Check if periodMark is a valid number
+                if (!isNaN(periodMark)) {
+                    // Calculate the required exam mark for distinction
+                    const requiredExamMark = (((75 - periodMark * 0.4) / 0.6) - periodMark).toFixed(2);
+
+                    // Check if requiredExamMark is a valid number
+                    if (!isNaN(requiredExamMark) && requiredExamMark >= 0 && requiredExamMark <= 100) {
+                        // Output the required marks for distinction
+                        periodMarkElement.innerHTML = `<span style="color: #999;">${subject.id}: You would need ${requiredExamMark} Marks in the exam to achieve a distinction @ 75% based on your period mark</span>`;
+                    }
+                }
+            });
+
+            // Show the result
+            const distinctionResult = document.getElementById("distinctionResult");
+            distinctionResult.innerHTML = '';
+            distinctionResult.style.display = "none";
+        }
+
+    </script>
+
+    <footer>
+        <img src="logo.png" alt="Logo" width="50" height="50" style="opacity: 0.7;">
+        <p>Powered By AshLabs 2023</p>
+    </footer>
+
+</body>
+
+</html>
